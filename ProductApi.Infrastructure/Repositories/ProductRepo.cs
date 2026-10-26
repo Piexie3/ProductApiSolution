@@ -1,5 +1,4 @@
-﻿using Ecommerce.SharedLirary.Interface;
-using Ecommerce.SharedLirary.Logs;
+﻿using Ecommerce.SharedLirary.Logs;
 using Ecommerce.SharedLirary.Responses;
 using Microsoft.EntityFrameworkCore;
 using ProductApi.Application.Interfaces;
@@ -15,7 +14,7 @@ namespace ProductApi.Infrastructure.Repositories
         {
             try
             {
-                var getProduct = await GetByAsync(product=> product.Name!.Equals(entity.Name));
+                var getProduct = await GetByAsync(product => product.Name!.Equals(entity.Name));
                 // checking if product already exixts
                 if (getProduct is not null && !string.IsNullOrEmpty(getProduct.Name))
                 {
@@ -23,15 +22,15 @@ namespace ProductApi.Infrastructure.Repositories
                 }
                 var currentEntity = context.Products.Add(entity).Entity;
                 await context.SaveChangesAsync();
-                if (currentEntity is not null&&currentEntity.Id > 0)
+                if (currentEntity is not null && currentEntity.Id > 0)
                 {
-                    return new Response(true,$" {currentEntity.Name} created successfully.");
+                    return new Response(true, $" {currentEntity.Name} created successfully.");
                 }
                 else
                 {
                     return new Response(false, $"Error occurred while creating {entity.Name}.");
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -66,12 +65,13 @@ namespace ProductApi.Infrastructure.Repositories
 
         public async Task<Product> FindByIdAsync(int id)
         {
-            try {
+            try
+            {
                 var product = await context.Products.FindAsync(id);
 
                 return product is null ? null! : product;
             }
-             catch (Exception ex)
+            catch (Exception ex)
             {
                 LogException.LogExceptions(ex);
                 throw new Exception("An error occurred while finding the product. Please try again later.");
@@ -95,7 +95,7 @@ namespace ProductApi.Infrastructure.Repositories
 
         public async Task<Product> GetByAsync(Expression<Func<Product, bool>> predicate)
         {
-           
+
             try
             {
                 var product = await context.Products.Where(predicate).FirstOrDefaultAsync();

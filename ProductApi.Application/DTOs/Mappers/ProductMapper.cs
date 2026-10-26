@@ -6,7 +6,7 @@ namespace ProductApi.Application.DTOs.Mappers
     {
         public static Product ToEntity(ProductDto product) => new()
         {
-            Id = product.Id,
+            //Id = product.Id,
             Name = product.Name,
             Quantity = product.Quantity,
             Price = product.Price
